@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block body %}
+<h2>{{ display_melon.common_name }}</h2>
+<img class="product-img" src="{{display_melon.imgurl}}">
+<div class="cart well">
+    <h3>Price per melon</h3>
+    <p> {{ display_melon.price_str() }} </p>
+    <a class="btn btn-primary" href="/add_to_cart/{{display_melon.id}}">Add to Cart</a>
+</div>
+<div class="melon-details">
+    <h3>Product details</h3>
+    <ul>
+        <li>Melon type: {{ display_melon.melon_type }}</li>
+        <li>Flesh color: {{ display_melon.flesh_color }}</li>
+        <li>Rind color: {{ display_melon.rind_color }}</li>
+        {% if display_melon.seedless %}
+        <li>Seedless melon</li>
+        {% else %}
+        <li class='warning'>Warning! This melon has seeds</li>
+        {% endif %}
+    </ul>
+</div>
+
+<div id = "cart">
+<div id = "cart-target">
+<!--     <a href="">Super Melon</a>
+    <p>Qty: 5</p>
+    <a href="">Super Melon</a>
+    <p>Qty: 5</p>
+    <a href="">Super Melon</a>
+    <p>Qty: 5</p> -->
+<!--     <a id="close_cart_btn" class="btn btn -xs btn-default" href="">Cart Close</a> -->
+</div>
+</div>
+
+<script type="text/javascript">
+
+function showCartSummary(data){
+    var s = $("div#cart");
+    s.html(data);
+    s.show();
+    return false;
+}
+
+function hideCartSummary(){
+    var s = $("div#cart");
+    s.hide();
+    return false;
+}
+
+function getCartContents(){
+    $.get("/cart_items", showCartSummary);
+}
+
+function main(){
+    var link = $("a#cart_header");
+    link.mouseover(getCartContents);
+
+    var close_link = $("a#close_cart_btn");
+    close_link.click(hideCartSummary);
+}
+
+$(main);
+
+</script>
+{% endblock %}
